@@ -110,7 +110,173 @@ Buffering is not just for console output. It’s crucial in:
 
 Understanding buffering helps write efficient, stable, real-time-capable programs.
 
+
+## Section 1.3: Functions
+
 ---
 
-✅ End of Sections 1.1 and 1.2  
-→ Ready for 1.3: Functions
+## 🧠 What are functions?
+
+Functions are named blocks of code that:
+
+- Perform specific tasks
+- Promote reuse
+- Make code readable and modular
+
+---
+
+## 🔹 Basic Function Structure
+
+```cpp
+int add(int a, int b) {
+    return a + b;
+}
+```
+
+- `int` → return type
+- `add` → function name
+- `(int a, int b)` → parameters
+- `return` → gives a result to the caller
+
+---
+
+## 🔹 Function Overloading
+
+C++ allows **multiple functions with the same name** as long as parameter types or counts differ.
+
+```cpp
+void print(int i);
+void print(double d);
+void print(const std::string& s);
+```
+
+The compiler picks the correct one based on arguments.
+
+💡 Use only when the functions serve the same logical purpose.
+
+---
+
+## 🔹 Return Types
+
+Functions can return:
+- Primitive types: `int`, `bool`, etc.
+- Complex types: `std::string`, `std::vector`
+- References or pointers
+
+```cpp
+std::string greet(const std::string& name) {
+    return "Hello, " + name;
+}
+```
+
+💡 Prefer `const std::string&` to avoid copying large objects.
+
+---
+
+## 🔹 `const&` in Function Parameters
+
+### 🧠 What is `const&`?
+
+- `const T& param` means “**pass a reference** to `param` and **do not modify** it.”
+- Used to avoid copying **and** prevent modification.
+
+### ✅ Why use it?
+
+- Speeds up performance by avoiding copies
+- Improves safety by preventing accidental modification
+
+### 🔁 Analogy:
+
+| Style                     | Analogy                           |
+|---------------------------|-----------------------------------|
+| `T param`                 | Make a copy of the parcel         |
+| `T& param`                | Hand over the parcel (can change) |
+| `const T& param`          | Hand over (read-only)             |
+
+### ⚠️ When NOT to use it:
+
+- For small types like `int`, `char`, `bool`
+  ```cpp
+  void printAge(int age); // ✅ Better than const int&
+  ```
+
+- When you need to modify the input:
+  ```cpp
+  void change(std::string& text); // Modifies the caller's variable
+  ```
+
+---
+
+## 🔹 Default Arguments
+
+You can provide default values:
+
+```cpp
+void log(const std::string& msg, bool error = false);
+```
+
+- If the second argument is not provided, `false` is used.
+- Default values must be **at the end** of the parameter list.
+
+---
+
+## 🔹 Inline Functions
+
+Used for small, frequently-used functions:
+
+```cpp
+inline int square(int x) {
+    return x * x;
+}
+```
+
+- Suggests the compiler to replace the call with the body.
+- Not guaranteed — it’s only a hint.
+
+---
+
+## 🔹 `auto` Return Type (C++14+)
+
+```cpp
+auto multiply(int a, int b) {
+    return a * b;
+}
+```
+
+Useful when the return type is obvious or verbose.  
+Can also use trailing return type syntax:
+
+```cpp
+auto divide(int a, int b) -> double {
+    return static_cast<double>(a) / b;
+}
+```
+
+---
+
+## ✅ Best Practices
+
+- Use `const&` for read-only large objects (e.g., `std::string`, `std::vector`)
+- Use pass-by-value for small types (`int`, `char`)
+- Keep functions short and focused
+- Avoid modifying inputs unless intended
+- Return by value unless there's a performance need
+
+---
+
+## 📌 Summary Table
+
+| Concept              | Best Use                                  |
+|----------------------|-------------------------------------------|
+| Overloading          | Multiple versions of a logical operation  |
+| `const T&`           | For large read-only inputs                |
+| `T` by value         | For small types (int, char, etc.)         |
+| `T&`                 | If modification of argument is needed     |
+| Default Parameters   | Avoids overloads for similar signatures   |
+| Inline Functions     | Use for tiny, hot-path functions          |
+| `auto` Return Type   | Cleaner and more readable for simple logic|
+
+---
+
+✅ End of Section 1.3  
+→ Ready for Section 1.4: Types, Variables, and Arithmetic
