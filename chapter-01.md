@@ -278,7 +278,6 @@ auto divide(int a, int b) -> double {
 
 ---
 
-# Chapter 1 – The Basics  
 ## Section 1.4: Types, Variables, and Arithmetic
 
 ---
@@ -431,11 +430,6 @@ std::cout << (i < u);  // ❌ might output false!
 
 ---
 
-✅ End of Section 1.4  
-→ Ready for Section 1.5: Scope and Lifetime
-
-
-# Chapter 1 – The Basics  
 ## Section 1.5: Scope and Lifetime
 
 ---
@@ -553,10 +547,6 @@ Avoid returning addresses or references to local variables.
 
 ---
 
-✅ End of Section 1.5  
-→ Ready for Section 1.6: Constants
-
-# Chapter 1 – The Basics  
 ## Section 1.6: Constants
 
 ---
