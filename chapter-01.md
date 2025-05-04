@@ -278,5 +278,391 @@ auto divide(int a, int b) -> double {
 
 ---
 
-✅ End of Section 1.3  
-→ Ready for Section 1.4: Types, Variables, and Arithmetic
+# Chapter 1 – The Basics  
+## Section 1.4: Types, Variables, and Arithmetic
+
+---
+
+## 🔹 Fundamental Built-in Types
+
+| Type        | Description                                  |
+|-------------|----------------------------------------------|
+| `bool`      | Boolean: `true` or `false`                   |
+| `char`      | Character (1 byte, often ASCII or UTF-8)     |
+| `int`       | Integer                                      |
+| `double`    | Floating-point number (64-bit)               |
+| `float`     | Smaller floating-point (32-bit)              |
+| `unsigned`  | Non-negative integer                         |
+
+### Example:
+```cpp
+bool is_ready = true;
+char letter = 'A';
+int age = 30;
+double pi = 3.14159;
+```
+
+💡 For platform-independent sizes, use `<cstdint>` types like `int32_t`, `uint64_t`.
+
+---
+
+## 🔹 Literals and Number Formats
+
+```cpp
+int decimal = 42;
+int hex     = 0x2A;
+int octal   = 052;
+int binary  = 0b101010;  // C++14
+```
+
+### 📌 Use Cases:
+
+| Format   | Use Case                                     |
+|----------|----------------------------------------------|
+| Decimal  | General-purpose programming                  |
+| Hex      | Memory, bitmasking, hardware, colors         |
+| Octal    | Unix file permissions, legacy compatibility  |
+| Binary   | Embedded, bit-level work, unit tests         |
+
+💡 C++14 allows binary literals using `0b`.  
+💡 Digit separators (`1'000'000`) make large numbers more readable (C++14+).
+
+---
+
+## 🔹 Variable Declaration and Initialization
+
+```cpp
+int a = 5;    // copy initialization
+int b{5};     // uniform initialization (preferred)
+int c = {5};  // copy-list initialization
+```
+
+### ✅ Prefer `{}` because:
+
+- It prevents **narrowing conversions**
+- It’s consistent and safer
+
+```cpp
+int i1 = 7.8;   // allowed: becomes 7
+int i2{7.8};    // ❌ error: narrowing not allowed with {}
+```
+
+---
+
+## 🔹 Type Inference with `auto`
+
+```cpp
+auto a = 42;       // int
+auto b = 3.14;     // double
+auto c = "hi";     // const char*
+```
+
+💡 Use `auto` when:
+- Type is obvious or redundant
+- Working with STL iterators or long type names
+
+---
+
+## 🔹 Arithmetic Operators
+
+| Operator | Description             |
+|----------|-------------------------|
+| `+`      | Addition                 |
+| `-`      | Subtraction              |
+| `*`      | Multiplication           |
+| `/`      | Division (truncates in int) |
+| `%`      | Modulo (integers only)   |
+
+```cpp
+int a = 10, b = 3;
+int q = a / b;  // 3
+int r = a % b;  // 1
+```
+
+---
+
+## 🔹 Comparison and Logical Operators
+
+| Operator | Description     |
+|----------|------------------|
+| `==`     | Equal             |
+| `!=`     | Not equal         |
+| `<`, `>` | Less/greater than |
+| `<=`, `>=` | Less/greater or equal |
+
+| Logical | Meaning         |
+|---------|-----------------|
+| `&&`    | AND              |
+| `||`    | OR               |
+| `!`     | NOT              |
+
+---
+
+## 🔹 Signed vs Unsigned
+
+```cpp
+unsigned int u = 10;
+int i = -5;
+```
+
+⚠️ Be careful when mixing signed and unsigned values.  
+It can lead to **surprising results** due to implicit conversions.
+
+```cpp
+unsigned u = 0;
+int i = -1;
+std::cout << (i < u);  // ❌ might output false!
+```
+
+💡 Rule of thumb: avoid mixing signed and unsigned unless necessary.
+
+---
+
+## ✅ Summary Table
+
+| Feature                 | Recommendation                                  |
+|-------------------------|--------------------------------------------------|
+| `{}` Initialization     | Prefer over `=` to catch narrowing              |
+| `auto`                  | Use when type is obvious or long to write       |
+| Digit Separators        | Use `'` to improve readability (C++14+)         |
+| `int32_t`, `uint64_t`   | Use for platform-independent integer sizes      |
+| Signed vs Unsigned      | Be cautious when mixing                         |
+| `%` Operator            | Use only for integer modulus                    |
+
+---
+
+✅ End of Section 1.4  
+→ Ready for Section 1.5: Scope and Lifetime
+
+
+# Chapter 1 – The Basics  
+## Section 1.5: Scope and Lifetime
+
+---
+
+## 🔹 What is Scope?
+
+Scope defines **where a variable can be accessed** in your program.
+
+### Example:
+```cpp
+void example() {
+    int x = 10;
+    {
+        int y = 20;
+        std::cout << x + y;  // ✅ OK: both x and y are visible here
+    }
+    std::cout << y;  // ❌ Error: y is out of scope
+}
+```
+
+### Common Scope Types:
+
+| Scope Type       | Description                              |
+|------------------|------------------------------------------|
+| Block scope      | Inside `{}`                              |
+| Function scope   | Parameters and local variables            |
+| Class scope      | Members of classes/structs               |
+| Global scope     | Outside any function or class            |
+| Namespace scope  | Inside a `namespace`                     |
+
+---
+
+## 🔹 What is Lifetime?
+
+Lifetime describes **how long a variable exists in memory**.
+
+- **Scope**: Where you can see it.
+- **Lifetime**: How long it lives.
+
+---
+
+## 🔸 Automatic (Stack) Lifetime
+
+Most local variables live on the stack:
+
+```cpp
+void foo() {
+    int a = 42;  // Created when foo() starts
+}               // Destroyed when foo() ends
+```
+
+- Fast and automatically cleaned up
+
+---
+
+## 🔸 Dynamic (Heap) Lifetime
+
+Allocated manually using `new` and `delete`:
+
+```cpp
+int* p = new int{42};
+// Do something with p
+delete p;
+```
+
+- You control memory duration
+- ⚠️ Prone to leaks and errors
+- 💡 Prefer `std::unique_ptr` or `std::shared_ptr`
+
+---
+
+## 🔸 Static Lifetime
+
+Created once and exists until the program ends:
+
+```cpp
+static int counter = 0;
+```
+
+Useful for stateful behavior across function calls.
+
+---
+
+## ⚠️ Bad Example: Returning a reference to a local variable
+
+```cpp
+int* dangerous() {
+    int x = 42;
+    return &x;  // ❌ x is destroyed after function ends
+}
+```
+
+Avoid returning addresses or references to local variables.
+
+---
+
+## ✅ Best Practices
+
+- Declare variables **as close to use as possible**
+- Use **automatic storage** unless you need dynamic memory
+- Avoid `new` and `delete` — use smart pointers
+- Never return a reference or pointer to a local variable
+
+---
+
+## 🧾 Summary Table
+
+| Concept   | Meaning                                             |
+|-----------|-----------------------------------------------------|
+| Scope     | Where variable is visible                           |
+| Lifetime  | How long variable stays in memory                   |
+| Stack     | Local, fast, auto-cleaned                           |
+| Heap      | Manual control, use smart pointers                  |
+| Static    | Exists for program duration                         |
+
+---
+
+✅ End of Section 1.5  
+→ Ready for Section 1.6: Constants
+
+# Chapter 1 – The Basics  
+## Section 1.6: Constants
+
+---
+
+## 🔹 `const` – Runtime constant
+
+```cpp
+const double pi = 3.14159;
+```
+
+- Value is fixed **after initialization**
+- Evaluated at **runtime**
+- Can be initialized with runtime expressions
+
+### Example:
+```cpp
+int input = get_user_input();
+const int max_allowed = input + 10;
+```
+
+---
+
+## 🔹 `constexpr` – Compile-time constant (C++11+)
+
+```cpp
+constexpr int max_size = 100;
+```
+
+- Value must be known **at compile-time**
+- Useful for:
+  - Array sizes
+  - Template arguments
+  - `switch` case labels
+
+### Example:
+```cpp
+constexpr int size = 5;
+int arr[size];  // OK
+```
+
+---
+
+## 🔸 `const` vs `constexpr`
+
+| Feature       | `const`                         | `constexpr`                           |
+|---------------|----------------------------------|----------------------------------------|
+| Evaluated     | Runtime                         | Compile-time                            |
+| Dynamic input | ✅ Allowed                      | ❌ Not unless input is constexpr         |
+| In switch     | ❌ Often not usable              | ✅ Fully usable                         |
+| Array size    | ❌ May not work                  | ✅ Always works                         |
+
+---
+
+## 🔹 Const Pointers
+
+```cpp
+const int* p = &x;     // pointer to const int
+int* const p2 = &x;    // const pointer
+const int* const p3 = &x; // both pointer and data are const
+```
+
+| Declaration           | What’s const?             |
+|------------------------|---------------------------|
+| `const int* p`         | The data (`*p`)           |
+| `int* const p`         | The pointer address       |
+| `const int* const p`   | Both data and pointer     |
+
+---
+
+## 🔹 `constexpr` Functions
+
+```cpp
+constexpr int square(int x) {
+    return x * x;
+}
+
+int arr[square(4)];  // OK
+```
+
+- Must contain only valid constexpr logic
+- Allows usage in constant expressions
+
+---
+
+## ✅ Best Practices
+
+| Tip                                | Why It Helps                                |
+|------------------------------------|----------------------------------------------|
+| Use `const` liberally              | Communicates intent and prevents mutation    |
+| Use `constexpr` where possible     | Enables compile-time checking and optimization |
+| Prefer named constants over literals | Improves readability and maintainability    |
+| Use `constexpr auto` when type is long | Combines clarity and conciseness          |
+
+---
+
+## 🧾 Summary Table
+
+| Keyword     | Description                        | When to Use                           |
+|-------------|------------------------------------|----------------------------------------|
+| `const`     | Read-only, value fixed at runtime  | For safety and clarity                |
+| `constexpr` | Value known at compile time        | For performance and correctness       |
+| `const int*`| Pointer to constant data           | Prevent data change via pointer       |
+| `int* const`| Constant pointer                   | Prevent pointer address change        |
+
+---
+
+✅ End of Section 1.6  
+→ Ready for Section 1.7: Pointers, Arrays, and References
+
