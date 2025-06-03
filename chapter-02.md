@@ -30,15 +30,17 @@ struct Point {
 
 ### Usage:
 
-'''cpp
+```cpp
 Point p;
 p.x = 3.5;
 p.y = 4.2;
-'''
+
+
+
 
 ## Structs with member functions
 structs can also have functions that operate on their own members:
-'''cpp
+```cpp
 struct Point{
     double x;
     double y;
@@ -54,12 +56,12 @@ struct Point{
 
 ### Usage:
 
-'''cpp
+```cpp
 Point p = {1.0,2.0};
 p.move(3.0,2.0);
 p.print(); // output: (4.0,1.0)
-'''
 
-'''
+
+
 
 '''
