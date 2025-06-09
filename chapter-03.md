@@ -26,7 +26,7 @@ Introduced as a modern alternative to header files.
 ```cpp
 export module math;
 export int add(int a, int b);
-
+```
 #### Module Implementation (`math.cpp`)
 ```cpp
 module math;
