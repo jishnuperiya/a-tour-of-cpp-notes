@@ -33,12 +33,12 @@ module math;
 int add(int a, int b) {
     return a + b;
 }
-
+```
 #### Use of import instead of include:
 
 ```cpp
 import math
-
+```
 
 
 ####  Problem with #include
@@ -52,7 +52,7 @@ This leads to redundant parsing of the same code across many translation units.
 ### Syntax
 ```cpp
 auto [var1, var2, ..., varN] = expression;
-
+```
 - expression must return a tuple-like object (e.g., std::pair, std::tuple, array, or struct with public members).
 
 
@@ -65,14 +65,14 @@ struct Point {
 
 Point pt{5, 7};
 auto [x, y] = pt;
-
+```
 ### tuples or pairs
 
 ```cpp
 std::pair<int, std::string> p = {1, "apple"};
 int id = p.first;
 std::string name = p.second;
-
+```
 ## 🔹 4. Function Return Values and Arguments
 
 - Use const T& for read-only inputs.
@@ -93,7 +93,7 @@ int main() {
     assert(x > 0); // Passes
     assert(x < 0); // Fails and terminates the program
 }
-
+```
 -checked at Runtime(debug) - in release mode, the assertions are removed by the compiler
 ### 🧪 Compile-time Checks (Static Assertions)
 
