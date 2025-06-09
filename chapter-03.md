@@ -101,7 +101,7 @@ Use static_assert to validate conditions at compile time. Useful for type sizes,
 
 ```cpp
 static_assert(sizeof(int) == 4, "Unexpected int size");
-
+```
 ## 🔹 6. Error Handling
 
 - learn later
