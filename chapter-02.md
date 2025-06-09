@@ -27,14 +27,14 @@ struct Point {
     double x;
     double y;
 };
-
+```
 ### Usage:
 
 ```cpp
 Point p;
 p.x = 3.5;
 p.y = 4.2;
-
+```
 
 
 
@@ -53,14 +53,14 @@ struct Point{
         y+=dy;
     }
 };
-
+```
 ### Usage:
 
 ```cpp
 Point p = {1.0,2.0};
 p.move(3.0,2.0);
 p.print(); // output: (4.0,1.0)
-
+```
 
 
 
