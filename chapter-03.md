@@ -26,7 +26,7 @@ Introduced as a modern alternative to header files.
 ```cpp
 export module math;
 export int add(int a, int b);
-
+```
 #### Module Implementation (`math.cpp`)
 ```cpp
 module math;
@@ -101,7 +101,7 @@ Use static_assert to validate conditions at compile time. Useful for type sizes,
 
 ```cpp
 static_assert(sizeof(int) == 4, "Unexpected int size");
-
+```
 ## 🔹 6. Error Handling
 
 - learn later
