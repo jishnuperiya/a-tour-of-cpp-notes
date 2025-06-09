@@ -106,5 +106,10 @@ static_assert(sizeof(int) == 4, "Unexpected int size");
 
 - learn later
 
+- topics: 
 
+- throwing exception
+- catching exception
+- standard exceptions
+- exception safety with raii
 
