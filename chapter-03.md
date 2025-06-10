@@ -161,5 +161,7 @@ int main() {
 	4.	The exception bubbles up through the stack and is caught in main()
 	5.	Program does not crash, and you print a useful error message
 
+you can also wrire your own exception classes
+
 
 
