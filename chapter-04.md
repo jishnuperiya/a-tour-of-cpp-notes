@@ -22,7 +22,7 @@ Manage resources like memory automatically
 
 Build reusable, readable, and efficient code using object-oriented and generic programming ideas
 
-##🔸 Concrete Types
+## 🔸 Concrete Types
 A concrete type behaves like a built-in type — it has:
 
 A known, fixed structure (like built-in int)
@@ -97,7 +97,7 @@ delete[] deallocates it
 
 This pattern is called RAII: Resource Acquisition Is Initialization
 
-🪄 Initializing Containers
+### 🪄 Initializing Containers
 C++ gives you two smart ways to fill a container:
 
 Initializer list
@@ -113,7 +113,7 @@ v.push_back(7.5);
 ```
 This is how std::vector also works under the hood.
 
-##🔸 Abstract Types
+## 🔸 Abstract Types
 An abstract type is a blueprint that defines what something should do, but not how.
 
 You make a class abstract by writing at least one pure virtual function:
@@ -126,7 +126,7 @@ public:
 ```
 You can’t create objects of abstract classes. You must derive a class from it and implement the function.
 
-##🔸 Virtual Functions
+## 🔸 Virtual Functions
 When you want polymorphism, use virtual.
 
 ```cpp
@@ -137,7 +137,7 @@ public:
 ```
 This ensures that if you write shape->draw();, the correct version is called — even if you’re using a base class pointer to refer to a derived object.
 
-##🔸 Class Hierarchies
+## 🔸 Class Hierarchies
 Used when you have related types and want them to share behavior.
 
 Example:
@@ -147,17 +147,17 @@ class Shape { ... };
 class Circle : public Shape { ... };
 class Rectangle : public Shape { ... };
 ```
-####✔️ Benefits from Hierarchies
+#### ✔️ Benefits from Hierarchies
 Code reuse
 
 Unified interface
 
 Easier extension
 
-####🔁 Hierarchy Navigation
+#### 🔁 Hierarchy Navigation
 You can store all shapes in a list of Shape* and draw them without knowing if they’re circles or rectangles.
 
-####❌ Avoiding Resource Leaks
+#### ❌ Avoiding Resource Leaks
 Use destructors and smart pointers to clean up memory automatically. If your base class has virtual functions, its destructor must be virtual.
 
 ## ✅ Advice
