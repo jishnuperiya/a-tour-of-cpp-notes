@@ -9,7 +9,7 @@ chapter 7 - generic programming
 
 all these features helps you to write object oriented code(with classes and hierarchies) and generic code (with template and concepts).
 
-##🔹 Introduction
+## 🔹 Introduction
 Think of a class as a blueprint for creating your own types.
 
 C++ has built-in types like int, double, and char, but when you want to represent real-world things (e.g., a BankAccount, a Car, a StudentRecord), you define your own type using class.
