@@ -165,3 +165,20 @@ you can also wrire your own exception classes
 
 
 
+📘 Chapter 4 – Classes (Overview)
+
+This chapter introduces C++ classes, which are the foundation of object-oriented programming in C++.
+
+🔹 Topics Covered:
+	1.	Defining a Class
+	2.	Constructors
+	3.	Copy and Move
+	4.	Operator Overloading
+	5.	Member Functions
+	6.	Access Control (public, private)
+	7.	Struct vs Class
+	8.	Inline Functions
+	9.	Default Member Initialization
+	10.	Aggregate Classes
+
+
