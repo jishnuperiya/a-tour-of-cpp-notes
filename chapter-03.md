@@ -112,4 +112,57 @@ static_assert(sizeof(int) == 4, "Unexpected int size");
 - catching exception
 - standard exceptions
 - exception safety with raii
+🎯 Real-World Example: Reading a Configuration File
+
+Let’s say your program reads a config file. If the file isn’t found or readable, you want to throw an error — but you don’t want to handle it in every helper function. Instead, you let the exception bubble up to main().
+
+
+#include <iostream>
+#include <fstream>
+#include <stdexcept>
+
+// Low-level function that might fail
+void readConfigFile(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file) {
+        throw std::runtime_error("Failed to open config file: " + filename);
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+        std::cout << "Config: " << line << '\n';
+    }
+}
+
+// Mid-level function that calls the file reader
+void initializeApplication() {
+    readConfigFile("config.txt"); // Could throw
+}
+
+// Top-level function (main)
+int main() {
+    try {
+        initializeApplication(); // Let exceptions bubble up here
+        std::cout << "App initialized successfully.\n";
+    } catch (const std::exception& e) {
+        std::cerr << "Startup error: " << e.what() << '\n';
+        return 1; // Non-zero return code = error
+    }
+
+    return 0;
+}
+
+
+🔁 Flow of Execution
+	1.	main() calls initializeApplication()
+	2.	initializeApplication() calls readConfigFile()
+	3.	readConfigFile() tries to open a file
+	•	If the file doesn’t exist ➝ it throws an exception
+	4.	The exception bubbles up through the stack and is caught in main()
+	5.	Program does not crash, and you print a useful error message
+
+you can also wrire your own exception classes
+
+
+
 
