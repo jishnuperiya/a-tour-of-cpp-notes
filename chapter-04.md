@@ -126,6 +126,51 @@ public:
 ```
 You can’t create objects of abstract classes. You must derive a class from it and implement the function.
 
+that =0 means "i declare this function but i do not implement it here"
+
+### example:shapes
+we define a base class like this:
+```cpp
+class Shape{
+public:
+    virtual void draw() const =0; // pure virtual function
+};
+```
+now every shape must implement draw.
+```cpp
+class Circle : public Shape{
+public:
+    void draw() const override{
+        std::cout << "drawing a circle" <<std::endl;
+    }
+};
+```
+```cpp
+class Square : public Shape{
+public:
+    void draw() const override{
+        std::cout << "drawing a square";
+    }
+};
+
+```
+now you can see
+
+```cpp
+void draw_shape(const Shape& s){
+    s.draw(); // works for any shape!
+}
+```
+and call:
+
+```cpp
+Circle c;
+Square s;
+draw_shape(c); // draws circle
+draw_shape(s); // draws square
+```
+this is polymorphism in action. using one interface to work with many kinds of derived classes!
+
 ## 🔸 Virtual Functions
 When you want polymorphism, use virtual.
 
@@ -160,6 +205,75 @@ You can store all shapes in a list of Shape* and draw them without knowing if th
 #### ❌ Avoiding Resource Leaks
 Use destructors and smart pointers to clean up memory automatically. If your base class has virtual functions, its destructor must be virtual.
 
+ 1. Use Destructors to Release Resources
+If you write a class that acquires a resource (like memory using new), you must release it in the destructor.
+
+```cpp
+class Buffer {
+    int* data;
+public:
+    Buffer(int size) : data(new int[size]) {}
+    ~Buffer() { delete[] data; }  // destructor frees memory
+};
+```
+This ensures that whenever the Buffer object is destroyed, the memory is also cleaned up automatically.
+
+This is part of the RAII principle:
+👉 Resource Acquisition Is Initialization — get resource in constructor, release it in destructor.
+
+✅ 2. Use Smart Pointers Instead of new/delete
+C++ offers smart pointers like std::unique_ptr and std::shared_ptr that automatically clean up memory.
+
+Example with unique_ptr:
+```cpp
+#include <memory>
+
+class Buffer {
+    std::unique_ptr<int[]> data;
+public:
+    Buffer(int size) : data(std::make_unique<int[]>(size)) {}
+    // no destructor needed! memory auto-freed
+};
+```
+You don't need to write a destructor. When Buffer is destroyed, data is automatically deleted.
+
+⚠️ Virtual Destructor in Base Class
+If your class is meant to be inherited, and it has virtual functions, always make its destructor virtual.
+
+Why?
+So that when you delete a derived object using a base class pointer, the derived destructor is also called.
+
+🔥 Example of a bug:
+```cpp
+class Base {
+public:
+    ~Base() { std::cout << "Base destroyed\n"; }
+};
+
+class Derived : public Base {
+public:
+    ~Derived() { std::cout << "Derived destroyed\n"; }
+};
+
+Base* p = new Derived;
+delete p;  // ❌ Only Base destructor is called, memory leak!
+```
+Now fix it with a virtual destructor:
+
+```cpp
+class Base {
+public:
+    virtual ~Base() { std::cout << "Base destroyed\n"; }
+};
+
+class Derived : public Base {
+public:
+    ~Derived() { std::cout << "Derived destroyed\n"; }
+};
+
+Base* p = new Derived;
+delete p;  // ✅ Both Derived and Base destructors called
+```
 ## ✅ Advice
 Use classes to model real-world ideas
 
