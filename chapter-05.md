@@ -19,9 +19,7 @@ When you make your own class, C++ assumes you want:
 But if you want to manage resources (e.g., memory, file handles), you must control how copying and moving happen.
 
 🧪 Let's Build a Class the Wrong Way First
-cpp
-Copy
-Edit
+```cpp
 class Data {
     int* ptr;
 public:
@@ -32,17 +30,15 @@ public:
         delete ptr;
     }
 };
-cpp
-Copy
-Edit
+```
+```cpp
 Data a(5);
 Data b = a; // ❌ shallow copy — double delete crash!
+```
 By default, b = a just copies the pointer, not the actual memory it points to.
 
-✅ Rule of 5: The Correct Way to Write a Resource-Managing Class
-cpp
-Copy
-Edit
+### ✅ Rule of 5: The Correct Way to Write a Resource-Managing Class
+```cpp
 class Data {
     int* ptr;
 public:
@@ -78,30 +74,28 @@ public:
         return *this;
     }
 };
-🔄 swap() — The Friendly Utility
+```
+### 🔄 swap() — The Friendly Utility
 Swap lets you exchange data between two objects:
 
-cpp
-Copy
-Edit
+```cpp
 void swap(Data& a, Data& b) noexcept {
     using std::swap;
     swap(a.ptr, b.ptr);
 }
+```
 Why? It's used in:
 
-Assignment
+- Assignment
 
-Sorting
+- Sorting
 
-std::vector::resize
+- std::vector::resize
 
-Exception-safe programming (copy-and-swap idiom)
+- Exception-safe programming (copy-and-swap idiom)
 
-⚖️ Comparison: == and !=
-cpp
-Copy
-Edit
+### ⚖️ Comparison: == and !=
+```cpp
 bool operator==(const Data& a, const Data& b) {
     return *(a.ptr) == *(b.ptr);
 }
@@ -109,92 +103,59 @@ bool operator==(const Data& a, const Data& b) {
 bool operator!=(const Data& a, const Data& b) {
     return !(a == b);
 }
+```
 Used in:
 
-std::find
+- std::find
 
-Unit tests
+- Unit tests
 
-Assertions
+- Assertions
 
-📚 Modern Tip: Use = default and = delete
+### 📚 Modern Tip: Use = default and = delete
 If you don’t want copying:
 
-cpp
-Copy
-Edit
+```cpp
 Data(const Data&) = delete;
 Data& operator=(const Data&) = delete;
+```
 If you want to say “use compiler-generated version”:
 
-cpp
-Copy
-Edit
+```cpp
 Data(const Data&) = default;
 Data& operator=(const Data&) = default;
+```
 This is clearer and safer than writing empty bodies.
 
-📌 Summary Table
-Operation	Purpose
-Copy Constructor	Create a new copy of an object
-Copy Assignment	Copy values from one object to another
-Move Constructor	Transfer ownership (e.g., std::move)
-Move Assignment	Same as above, but after object is created
-Destructor	Release memory/resources
-Swap	Exchange contents quickly
-==, !=	Compare objects logically
+## 📦 Chapter 5: Essential Operations – Summary
 
-🧠 When Should You Write These?
-Write all 5 when:
+This chapter covers how to properly implement copy, move, swap, and comparison operations for user-defined types, especially those managing resources.
 
-You manage resources (memory, files, sockets)
+| Operation               | Purpose                                                                 |
+|-------------------------|-------------------------------------------------------------------------|
+| Copy Constructor        | Creates a new object as a copy of an existing one.                      |
+| Copy Assignment         | Assigns the contents of one object to another.                          |
+| Move Constructor        | Transfers ownership of resources from one object to another.            |
+| Move Assignment         | Transfers ownership during assignment, avoiding unnecessary copies.     |
+| Destructor              | Frees resources when the object is destroyed.                           |
+| `swap()`                | Exchanges contents of two objects efficiently and safely.               |
+| `==`, `!=` Operators    | Provides logical comparison between objects.                            |
+| `= default`             | Ask compiler to generate a default version of the operation.            |
+| `= delete`              | Prevent compiler from generating the operation (e.g., to disable copy). |
 
-You want to prevent accidental deep or shallow copies
+### 🛠 When to Implement Manually
+- Your class manages resources (heap memory, file handles, etc.)
+- You want fine-grained control over copying and moving
+- You aim for performance and exception safety
 
-You want your class to behave like a standard container
+### ✅ Rule of 5 Checklist
+If you implement any one of these manually, consider implementing all:
+- Copy Constructor
+- Copy Assignment Operator
+- Move Constructor
+- Move Assignment Operator
+- Destructor
 
-🛠️ Want to Practice?
-I can guide you through:
+### 🧠 Pro Tip
+Use `=default` or `=delete` to make your intent explicit and avoid subtle bugs.
 
-Implementing a Buffer class that holds a char*
-
-Adding full Rule of 5 + comparison operators
-
-Writing a benchmark to show copy vs move cost
-
-Integrating it into a small real-world C++ project (e.g., your ADTF tooling)
-
-Would you like to do that next?
-
-
-
-
-
-
-
-You said:
-so with this the whole chapter finished?
-
-
-ChatGPT said:
-Yes, Jishnu — with what we've covered above, you’ve learned the entire core of Chapter 5: Essential Operations in A Tour of C++ — and in more depth and with better intuition than just reading the book.
-
-✅ Here's what you've mastered:
-Concept	Status
-✅ Why copy/move matters	✔️
-✅ Rule of 5	✔️
-✅ Writing copy/move ctors and assignment	✔️
-✅ swap() and its purpose	✔️
-✅ == and != operators	✔️
-✅ When to use = default / = delete	✔️
-✅ When and why to implement all of this	✔️
-
-🔁 Optional Extras You Could Explore (Not required for this chapter, but useful):
-Copy-and-Swap Idiom for exception-safe assignment
-
-How STL containers use these operations internally
-
-How std::unique_ptr and std::shared_ptr help you avoid writing Rule of 5 yourself
-
-🎯 TL;DR of the Chapter in 1 Line
-If your class manages a resource (like heap memory), you must control how it copies, moves, assigns, and destroys — or you’ll get bugs, crashes, or performance issues.
