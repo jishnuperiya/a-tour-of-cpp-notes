@@ -285,3 +285,24 @@ Use virtual functions for polymorphism
 
 Avoid raw pointers in modern C++
 
+
+
+## Additional Notes
+### new: low level manuall allocation
+```cpp
+MyClass* p = new MyClass(42);
+```
+- allocates memory manually  on the heap
+- returns raw pointer
+- you must call delete p; manually or you will have a memory leak
+- no exception safety. if something throws between new and delete, you leak memory
+
+## std::make_unique<T>() : Modern RAII Allocation
+```cpp
+auto p = std::make_unique<MyClass>(42);
+```
+- allocates memory and wraps it in a std::unique pointer
+- automatically calls delete when the pointer goes out of scope (RAII)
+- exception safe: you never leak memory even if exception is thrown
+- recommended way to allocate heap memory in modern c++ (c++14+)
+
