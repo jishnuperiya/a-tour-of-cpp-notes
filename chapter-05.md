@@ -176,4 +176,4 @@ public:
 | Should avoid copying?       | Use `=delete` on copy ops    |
 | Want compiler to auto-generate? | Use `=default`            |
 
-
+rule of three is pre c++11. only in c++11 move semantics got introduced and move constructor and move assignment operator got introduced. so rule of three before c++11 and rule of 5 after c++11
