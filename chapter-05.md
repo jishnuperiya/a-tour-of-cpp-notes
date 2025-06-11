@@ -1,20 +1,20 @@
 When you make your own class, C++ assumes you want:
 
-A default constructor
+- A default constructor
 
-A destructor
+- A destructor
 
-A copy constructor
+- A copy constructor
 
-A copy assignment operator
+- A copy assignment operator
 
-A move constructor
+- A move constructor
 
-A move assignment operator
+- A move assignment operator
 
-An equality (==) and inequality (!=) operator
+- An equality (==) and inequality (!=) operator
 
-A swap function
+- A swap function
 
 But if you want to manage resources (e.g., memory, file handles), you must control how copying and moving happen.
 
